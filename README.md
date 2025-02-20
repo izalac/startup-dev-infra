@@ -29,15 +29,18 @@ Reboot or relog
 lxd init
 ```
 
-Create a "general" lxc profile out of two partial template files and your ssh key. This will update containers, install required software, and insert your ssh key into "ansible" user on container once the profile is applied. If you don't have a key, use ssh-keygen. Assuming you're using a key in the default location, position yourself in the directory where you cloned this project and run the following:
+Create a "general" lxc profile through terraform out of partial template files and your ssh key using a provided script. This profile will update containers, install required software, and insert your ssh key into "ansible" user on container once the profile is applied. If you don't have a key, use ssh-keygen. Assuming you're using a key in the default location, position yourself in the directory where you cloned this project and run the following:
 
 ```
-cp templates/vendor-data.yaml.t ./general.yaml
-cat templates/cloud-init.yaml.t | sed 's/^/    /' >> ./general.yaml
-cat ~/.ssh/id_rsa.pub | sed 's/^/        - /' >> ./general.yaml
+./create-general-profile.sh
+```
 
-lxc profile create general
-lxc profile edit general < general.yaml
+Verify that general.tf has been created. Now we can initialize terraform, verify that everything is in order, and bring everything up:
+
+```
+terraform init
+terraform plan
+terraform apply
 ```
 
 TBC...
