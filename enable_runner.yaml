@@ -1,0 +1,28 @@
+---
+- name: Register gitea agent and deploy service
+  hosts: gitea-runner
+  user: ansible
+  become: true
+  vars_prompt:
+    - name: reg_token
+      prompt: Enter Gitea registration token
+
+  tasks:
+    - name: Register a runner
+      ansible.builtin.shell: act_runner register --no-interactive --instance http://gitea:3000 --token {{ reg_token  }} --name runner1 --labels demo
+
+    - name: Copy service file
+      ansible.builtin.copy:
+        src: ./templates/gitea-runner.service
+        dest: /etc/systemd/system/gitea-runner.service
+        mode: '0644'
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Start and enable service
+      ansible.builtin.systemd:
+        name: gitea-runner
+        enabled: yes
+        state: started
