@@ -1,0 +1,26 @@
+---
+- name: Deploy syslog configuration
+  hosts: all
+  user: ansible
+  become: true
+
+  tasks:
+    - name: Copy config file - client
+      ansible.builtin.copy:
+        src: ./templates/rsyslog.client.conf
+        dest: /etc/rsyslog.conf
+        mode: '0644'
+      when: "'syslog' not in inventory_hostname"
+
+    - name: Copy config file - server
+      ansible.builtin.copy:
+        src: ./templates/rsyslog.server.conf
+        dest: /etc/rsyslog.conf
+        mode: '0644'
+      when: "'syslog' in inventory_hostname"
+
+    - name: Restart service
+      ansible.builtin.systemd:
+        name: rsyslog
+        enabled: yes
+        state: restarted

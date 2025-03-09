@@ -9,7 +9,7 @@ resource "lxd_instance" "gitea" {
   name      = "gitea"
   image     = "ubuntu:noble"
   ephemeral = "false"
-  profiles  = ["default", lxd_profile.general.name, lxd_profile.gitea.name]
+  profiles  = ["default", lxd_profile.general.name, lxd_profile.gitea.name, lxd_profile.gitea-proxy.name]
 }
 
 resource "lxd_instance" "gitea-runner" {
@@ -23,7 +23,7 @@ resource "lxd_instance" "zulip" {
   name      = "zulip"
   image     = "ubuntu:noble"
   ephemeral = "false"
-  profiles  = ["default", lxd_profile.general.name, lxd_profile.zulip.name]
+  profiles  = ["default", lxd_profile.general.name, lxd_profile.zulip-https.name]
 }
 
 resource "lxd_instance" "appsrv" {
@@ -31,4 +31,11 @@ resource "lxd_instance" "appsrv" {
   image     = "ubuntu:noble"
   ephemeral = "false"
   profiles  = ["default", lxd_profile.general.name, lxd_profile.app-blue.name]
+}
+
+resource "lxd_instance" "syslog" {
+  name      = "syslog"
+  image     = "ubuntu:noble"
+  ephemeral = "false"
+  profiles  = ["default", lxd_profile.general.name, lxd_profile.syslog.name]
 }

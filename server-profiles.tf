@@ -24,13 +24,14 @@ resource "lxd_profile" "runner" {
   }
 }
 
-# TBD
-resource "lxd_profile" "zulip" {
-  name        = "profile-zulip"
-  description = "Zulip configuration profile"
+resource "lxd_profile" "syslog" {
+  name        = "profile-syslog"
+  description = "Syslog server configuration profile"
   config = {
     "cloud-init.user-data" : <<EOT
     #cloud-config
+    runcmd:
+      - snap install lnav
     EOT
   }
 }

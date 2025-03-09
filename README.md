@@ -55,5 +55,10 @@ As soon as lxc resources are created via terraform, cloud-init (defined in lxc p
 ./check-cloudinit-status.sh
 ```
 
+Not all configuration is done by cloud-init. First step would be to configure syslog server. Adjust configuration in templates if you want, then run:
+
+```
+ansible-playbook -i inventory config_syslog.yaml
+```
 
 TBC...
