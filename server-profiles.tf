@@ -24,7 +24,7 @@ resource "lxd_profile" "runner" {
   }
 }
 
-resource "lxd_profile" "syslog" {
+resource "lxd_profile" "syslogsrv" {
   name        = "profile-syslog"
   description = "Syslog server configuration profile"
   config = {

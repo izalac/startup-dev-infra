@@ -33,9 +33,9 @@ resource "lxd_instance" "appsrv" {
   profiles  = ["default", lxd_profile.general.name, lxd_profile.app-blue.name]
 }
 
-resource "lxd_instance" "syslog" {
-  name      = "syslog"
+resource "lxd_instance" "syslogsrv" {
+  name      = "syslogsrv"
   image     = "ubuntu:noble"
   ephemeral = "false"
-  profiles  = ["default", lxd_profile.general.name, lxd_profile.syslog.name]
+  profiles  = ["default", lxd_profile.general.name, lxd_profile.syslogsrv.name]
 }

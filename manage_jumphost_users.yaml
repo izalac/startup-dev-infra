@@ -1,0 +1,56 @@
+---
+- name: Manage SSH users that will connect through jumphost
+  hosts: all
+  user: ansible
+  become: true
+  vars:
+    ssh_users: # Add more in the same format
+      - username: user1
+        public_key: "ssh-rsa AAA..." # Add your own
+        state: present
+        comment: "Sample user"
+
+      - username: user2
+        # Sample deleted user - remove key and set state to absent
+        state: absent
+
+  tasks:
+    - name: Create 'jumphost' group if it's not there
+      ansible.builtin.group:
+        name: jumphost
+        state: present
+
+    - name: Manage SSH users
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        state: "{{ item.state }}"
+        groups: jumphost,syslog,adm  # Syslog and adm is here because it's assumed jumphost users will monitor systems and audit logs. Adjust according to your needs.
+        shell: /bin/bash
+        comment: "{{ item.comment | default('SSH user') }}"
+        create_home: "{{ item.create_home | default('yes') }}"
+      loop: "{{ ssh_users }}"
+
+    - name: Ensure .ssh directory exists for active users
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/.ssh"
+        state: directory
+        owner: "{{ item.username }}"
+        group: jumphost
+        mode: '0700'
+      loop: "{{ ssh_users }}"
+      when: item.state == 'present'
+
+    - name: Remove SSH key for absent users
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/.ssh/authorized_keys"
+        state: absent
+      loop: "{{ ssh_users }}"
+      when: item.state == 'absent'
+
+    - name: Add or verify SSH key for active users
+      ansible.posix.authorized_key:
+        user: "{{ item.username }}"
+        key: "{{ item.public_key }}"
+        state: "{{ item.state }}"
+      loop: "{{ ssh_users }}"
+      when: "item.public_key is defined and item.public_key != '' and item.state=='present'"

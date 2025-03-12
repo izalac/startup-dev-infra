@@ -10,14 +10,17 @@
         src: ./templates/rsyslog.client.conf
         dest: /etc/rsyslog.conf
         mode: '0644'
-      when: "'syslog' not in inventory_hostname"
+      when: "'syslogsrv' not in inventory_hostname"
 
     - name: Copy config file - server
       ansible.builtin.copy:
         src: ./templates/rsyslog.server.conf
         dest: /etc/rsyslog.conf
         mode: '0644'
-      when: "'syslog' in inventory_hostname"
+      when: "'syslogsrv' in inventory_hostname"
+
+    - name: Reloads systemd daemon configuration
+      ansible.builtin.shell: systemctl daemon-reload
 
     - name: Restart service
       ansible.builtin.systemd:
