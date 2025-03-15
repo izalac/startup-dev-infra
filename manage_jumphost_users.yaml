@@ -4,9 +4,9 @@
   user: ansible
   become: true
   vars:
-    ssh_users: # Add more in the same format
+    ssh_users:
       - username: user1
-        public_key: "ssh-rsa AAA..." # Add your own
+        public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDM8yoPxLaHQbuyQiLSk5V31l6Q8VcXAPygMDPGltrFVUoRCTrviOY3eUjVrHB/ctVr95Jgk8UZ6FX3lYWv6XwqzQH/bhusCLQIJX7OoQ6rRQQLWKmTp6S3IBGTFxz0iX8hRBFw7d9FwBdJiiX5a+5LU84/r5CJ8tikdtdbxrbbvOjJcpzoIuBk3ty//BrOMgcU/euszHQqxmSRIeo5Ca8qKnjIceC3qQDYwECgl6Jl60jMF7xTkqZOIg/ifkHzCWjGZDfM89uPU2nKxSGGdd57JKCpMV9gUf/m+3GUIR5Apsf0XQ5t8v4w11BKn4JVaY3nSognsvi1G2PcwfF2YNN4KHWq1d1m90dTe6v3GiHzeCVxzLCP6h8wv3xfiFI74/Hw+cnfBgdNUu4q0ZAVQ3nVdpppYgZzkGSIlz4w4aWYzjDNhMNYXcYts6XB7k57Jq34Lh9xl2s4LtXNl4byjz5eF2cSMYtZ1hJMfv96xnnN1it+xLLctcTrqp95cQTOVnc= ivan@ivan-hp"
         state: present
         comment: "Sample user"
 
@@ -20,15 +20,27 @@
         name: jumphost
         state: present
 
-    - name: Manage SSH users
+    - name: Manage SSH users on non-jumphost systems
       ansible.builtin.user:
         name: "{{ item.username }}"
         state: "{{ item.state }}"
-        groups: jumphost,syslog,adm  # Syslog and adm is here because it's assumed jumphost users will monitor systems and audit logs. Adjust according to your needs.
+        groups: jumphost,syslog,adm  # Syslog and adm is here because it's assumed jumphost users will monitor systems and audit logs. Adjust accordingly to your needs.
         shell: /bin/bash
         comment: "{{ item.comment | default('SSH user') }}"
         create_home: "{{ item.create_home | default('yes') }}"
       loop: "{{ ssh_users }}"
+      when: "'jumphost' not in inventory_hostname"
+
+    - name: Manage SSH users on jumphost
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        state: "{{ item.state }}"
+        groups: jumphost
+        shell: /usr/sbin/nologin # No login for users, only jumping to other hosts via exposed local port, e.g.: ssh -A -J user1@localhost:20022 user1@syslogsrv
+        comment: "{{ item.comment | default('SSH user') }}"
+        create_home: "{{ item.create_home | default('yes') }}"
+      loop: "{{ ssh_users }}"
+      when: "'jumphost' in inventory_hostname"
 
     - name: Ensure .ssh directory exists for active users
       ansible.builtin.file:
