@@ -61,4 +61,12 @@ The above script will also try to connect and add all servers' SSH fingerprints 
 ansible-playbook -i inventory config_syslog.yaml
 ```
 
+To configure gitea, connect via browser to the server and port hosting it if unmodified, this will be `http://localhost:3000/` - and continue the setup in browser. If you don't have a database server to connect to, you can use SQLite3 as database type. Configure the rest the way you want to. Note: if you're bringing this up in production environment, you may want to set up base url to what will be used. By default, user creation is allowed and the first registered user becomes an administrator. Proceed to do so.
+
+To connect the gitea runner, go to `http://localhost:3000/-/admin/actions/runners` (or equivalent URL for your environment), and copy token from "Create new Runner". After that, provide the token to:
+
+```
+ansible-playbook -i inventory enable_runner.yaml
+```
+
 TBC...
