@@ -1,3 +1,4 @@
 general.tf
 inventory
-hosts
+*.crt
+*.key

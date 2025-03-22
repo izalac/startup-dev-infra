@@ -75,11 +75,21 @@ resource "lxd_profile" "gitea-proxy" {
 
   device {
     type = "proxy"
-    name = "gitea-proxy"
+    name = "gitea-http-proxy"
 
     properties = {
       listen  = "tcp:0.0.0.0:3000"
       connect = "tcp:127.0.0.1:3000"
+    }
+  }
+
+  device {
+    type = "proxy"
+    name = "gitea-https-proxy"
+
+    properties = {
+      listen  = "tcp:0.0.0.0:3443"
+      connect = "tcp:127.0.0.1:3443"
     }
   }
 }
@@ -94,24 +104,8 @@ resource "lxd_profile" "zulip-https" {
     name = "zulip-proxy"
 
     properties = {
-      listen  = "tcp:0.0.0.0:8443"
+      listen  = "tcp:0.0.0.0:443"
       connect = "tcp:127.0.0.1:443"
-    }
-  }
-}
-
-# zulip-http
-resource "lxd_profile" "zulip-http" {
-  name        = "zulip-http"
-  description = "Zulip forwarding profile - http"
-
-  device {
-    type = "proxy"
-    name = "zulip-proxy"
-
-    properties = {
-      listen  = "tcp:0.0.0.0:8080"
-      connect = "tcp:127.0.0.1:80"
     }
   }
 }

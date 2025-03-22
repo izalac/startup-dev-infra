@@ -6,6 +6,7 @@ resource "lxd_profile" "gitea" {
     #cloud-config
     runcmd:
       - snap install gitea
+      - apt install nginx
     EOT
   }
 }
