@@ -19,11 +19,11 @@ resource "lxd_instance" "gitea-runner" {
   profiles  = ["default", lxd_profile.general.name, lxd_profile.runner.name]
 }
 
-resource "lxd_instance" "zulip" {
-  name      = "zulip"
+resource "lxd_instance" "matrix" {
+  name      = "matrix"
   image     = "ubuntu:noble"
   ephemeral = "false"
-  profiles  = ["default", lxd_profile.general.name, lxd_profile.zulip-https.name]
+  profiles  = ["default", lxd_profile.general.name, lxd_profile.matrix.name, lxd_profile.matrix-proxy.name]
 }
 
 resource "lxd_instance" "appsrv" {

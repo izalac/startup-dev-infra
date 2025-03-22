@@ -23,7 +23,7 @@ resource "lxd_profile" "app-blue" {
 
   device {
     type = "proxy"
-    name = "blue-proxy"
+    name = "blue-proxy-b"
 
     properties = {
       listen  = "tcp:0.0.0.0:8000"
@@ -33,7 +33,7 @@ resource "lxd_profile" "app-blue" {
 
   device {
     type = "proxy"
-    name = "green-proxy"
+    name = "green-proxy-b"
 
     properties = {
       listen  = "tcp:0.0.0.0:9000"
@@ -49,7 +49,7 @@ resource "lxd_profile" "app-green" {
 
   device {
     type = "proxy"
-    name = "green-proxy"
+    name = "green-proxy-g"
 
     properties = {
       listen  = "tcp:0.0.0.0:8000"
@@ -59,7 +59,7 @@ resource "lxd_profile" "app-green" {
 
   device {
     type = "proxy"
-    name = "blue-proxy"
+    name = "blue-proxy-g"
 
     properties = {
       listen  = "tcp:0.0.0.0:9000"
@@ -82,30 +82,20 @@ resource "lxd_profile" "gitea-proxy" {
       connect = "tcp:127.0.0.1:3000"
     }
   }
-
-  device {
-    type = "proxy"
-    name = "gitea-https-proxy"
-
-    properties = {
-      listen  = "tcp:0.0.0.0:3443"
-      connect = "tcp:127.0.0.1:3443"
-    }
-  }
 }
 
-# zulip-https
-resource "lxd_profile" "zulip-https" {
-  name        = "zulip-https"
-  description = "Zulip forwarding profile - https"
+# matrix-proxy
+resource "lxd_profile" "matrix-proxy" {
+  name        = "matrix-proxy"
+  description = "Matrix forwarding profile"
 
   device {
     type = "proxy"
-    name = "zulip-proxy"
+    name = "matrix-port-proxy"
 
     properties = {
-      listen  = "tcp:0.0.0.0:443"
-      connect = "tcp:127.0.0.1:443"
+      listen  = "tcp:0.0.0.0:8008"
+      connect = "tcp:127.0.0.1:8008"
     }
   }
 }
