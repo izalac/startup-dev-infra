@@ -1,0 +1,33 @@
+---
+- name: Deploy matrix configuration
+  hosts: matrix
+  user: ansible
+  become: true
+
+  tasks:
+    - name: Copy config file
+      ansible.builtin.copy:
+        src: ./templates/conduwuit.toml
+        dest: /etc/conduwuit/conduwuit.toml
+        mode: '0644'
+
+    - name: Copy service file
+      ansible.builtin.copy:
+        src: ./templates/conduwuit.service
+        dest: /etc/systemd/system/conduwuit.service
+        mode: '0644'
+
+    - name: Reloads systemd daemon configuration
+      ansible.builtin.shell: systemctl daemon-reload
+
+    - name: Stopping service
+      ansible.builtin.systemd:
+        name: conduwuit
+        enabled: yes
+        state: stopped
+
+    - name: Starting service
+      ansible.builtin.systemd:
+        name: conduwuit
+        enabled: yes
+        state: started
