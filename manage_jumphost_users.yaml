@@ -6,7 +6,7 @@
   vars:
     ssh_users:
       - username: user1
-        public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDM8yoPxLaHQbuyQiLSk5V31l6Q8VcXAPygMDPGltrFVUoRCTrviOY3eUjVrHB/ctVr95Jgk8UZ6FX3lYWv6XwqzQH/bhusCLQIJX7OoQ6rRQQLWKmTp6S3IBGTFxz0iX8hRBFw7d9FwBdJiiX5a+5LU84/r5CJ8tikdtdbxrbbvOjJcpzoIuBk3ty//BrOMgcU/euszHQqxmSRIeo5Ca8qKnjIceC3qQDYwECgl6Jl60jMF7xTkqZOIg/ifkHzCWjGZDfM89uPU2nKxSGGdd57JKCpMV9gUf/m+3GUIR5Apsf0XQ5t8v4w11BKn4JVaY3nSognsvi1G2PcwfF2YNN4KHWq1d1m90dTe6v3GiHzeCVxzLCP6h8wv3xfiFI74/Hw+cnfBgdNUu4q0ZAVQ3nVdpppYgZzkGSIlz4w4aWYzjDNhMNYXcYts6XB7k57Jq34Lh9xl2s4LtXNl4byjz5eF2cSMYtZ1hJMfv96xnnN1it+xLLctcTrqp95cQTOVnc= ivan@ivan-hp"
+        public_key: "ssh-rsa AAA..." #Add your own
         state: present
         comment: "Sample user"
 

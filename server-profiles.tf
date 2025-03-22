@@ -10,7 +10,7 @@ resource "lxd_profile" "gitea" {
   }
 }
 
-# downloading runner has fixed version - URL might require updating
+# Runner installs docker and a fixed version of runner - might require updating
 resource "lxd_profile" "runner" {
   name        = "profile-gitea-runner"
   description = "Gitea runner configuration profile"
@@ -18,6 +18,7 @@ resource "lxd_profile" "runner" {
     "cloud-init.user-data" : <<EOT
     #cloud-config
     runcmd:
+      - snap install docker
       - wget https://gitea.com/gitea/act_runner/releases/download/v0.2.11/act_runner-0.2.11-linux-amd64 -O /usr/bin/act_runner
       - chmod +x /usr/bin/act_runner
     EOT

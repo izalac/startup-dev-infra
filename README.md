@@ -43,19 +43,19 @@ terraform plan
 terraform apply
 ```
 
-By default, resources are created via dynamic IPs. The following script will parse the lxc list format, and output a simple ansible inventory file (./inventory), as well as a ./hosts file which you might or might not wish to append to your /etc/hosts file:
-
-```
-./create-inv-hosts.sh
-```
-
 As soon as lxc resources are created via terraform, cloud-init (defined in lxc profiles) will start, and may take a while to finish on some systems. To check the status of cloud-init, the following helpful script is provided:
 
 ```
 ./check-cloudinit-status.sh
 ```
 
-Not all configuration is done by cloud-init. First step would be to configure syslog server. Adjust configuration in templates if you want, then run:
+By default, resources are created via dynamic IPs. The following script will parse the lxc list format, and output a simple ansible inventory file (./inventory), as well as provide output in /etc/hosts format if you wish it:
+
+```
+./create-inv-hosts.sh
+```
+
+The above script will also try to connect and add all servers' SSH fingerprints to your `known_hosts` file. Not all configuration is done by cloud-init. First step would be to configure syslog server. Adjust configuration in templates if you want, then run:
 
 ```
 ansible-playbook -i inventory config_syslog.yaml
