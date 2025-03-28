@@ -12,13 +12,6 @@ resource "lxd_instance" "gitea" {
   profiles  = ["default", lxd_profile.general.name, lxd_profile.gitea.name, lxd_profile.gitea-proxy.name]
 }
 
-resource "lxd_instance" "gitea-runner" {
-  name      = "gitea-runner"
-  image     = "ubuntu:noble"
-  ephemeral = "false"
-  profiles  = ["default", lxd_profile.general.name, lxd_profile.runner.name]
-}
-
 resource "lxd_instance" "matrix" {
   name      = "matrix"
   image     = "ubuntu:noble"

@@ -34,6 +34,7 @@
 #
 # example: "conduwuit.woof"
 #
+# server_name = "localhost"
 server_name = "localhost"
 
 # The default address (IPv4 or IPv6) conduwuit will listen on.
@@ -45,6 +46,7 @@ server_name = "localhost"
 # "::1"]
 #
 #address = ["127.0.0.1", "::1"]
+address = ["0.0.0.0", "127.0.0.1", "::1"]
 
 # The port(s) conduwuit will listen on.
 #
@@ -57,6 +59,7 @@ server_name = "localhost"
 # To listen on multiple ports, specify a vector e.g. [8080, 8448]
 #
 #port = 8008
+port = 8008
 
 # The UNIX socket conduwuit will listen on.
 #
@@ -112,6 +115,7 @@ database_path = "/var/lib/conduwuit"
 # example: "🏳️‍⚧️"
 #
 #new_user_displayname_suffix = "🏳️‍⚧️"
+new_user_displayname_suffix = ""
 
 # If enabled, conduwuit will send a simple GET request periodically to
 # `https://pupbrain.dev/check-for-updates/stable` for any new
@@ -415,7 +419,7 @@ allow_registration = true
 # This makes your server vulnerable to abuse
 #
 #yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = false
-yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = true
+#yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = true
 
 # A static registration token that new users will have to provide when
 # creating an account. If unset and `allow_registration` is true,
@@ -428,6 +432,7 @@ yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = true
 # example: "o&^uCtes4HPf0Vu@F20jQeeWE7"
 #
 #registration_token =
+registration_token = "demo"
 
 # Path to a file on the system that gets read for additional registration
 # tokens. Multiple tokens can be added if you separate them with

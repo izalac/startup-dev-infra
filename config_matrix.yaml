@@ -26,6 +26,10 @@
         enabled: yes
         state: stopped
 
+    - name: Pausing to ensure orderly restart...
+      ansible.builtin.pause:
+        seconds: 5
+
     - name: Starting service
       ansible.builtin.systemd:
         name: conduwuit

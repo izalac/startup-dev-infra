@@ -1,0 +1,17 @@
+name: Checks if websites are up
+
+on:
+    push:
+    schedule:
+      - cron: '*/30 * * * *'
+
+jobs:
+    webcheck:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checking Gitea
+              run: curl -sL -w %{http_code} ${{ vars.GITEASRV_CURL }} -o /dev/null
+            
+            - name: Checking Matrix
+              run: curl -sL -w %{http_code} ${{ vars.MATRIXSRV_CURL }} -o /dev/null

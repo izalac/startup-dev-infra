@@ -61,12 +61,23 @@ The above script will also try to connect and add all servers' SSH fingerprints 
 ansible-playbook -i inventory config_syslog.yaml
 ```
 
-To configure gitea, connect via browser to the server and port hosting it if unmodified, this will be `http://localhost:3000/` - and continue the setup in browser. If you don't have a database server to connect to, you can use SQLite3 as database type. Configure the rest the way you want to. Note: if you're bringing this up in production environment, you may want to set up base url to what will be used. By default, user creation is allowed and the first registered user becomes an administrator. Proceed to do so.
+To configure gitea, connect via browser to the server and port hosting it - if unmodified, this will be `http://localhost:3000/` - and continue the setup in browser. If you don't have a database server to connect to, you can use SQLite3 as database type. Configure the rest the way you want to. Note: if you're bringing this up in production environment, you may want to set up base url to what will be used. By default, user creation is allowed and the first registered user becomes an administrator. Proceed to do so.
 
-To connect the gitea runner, go to `http://localhost:3000/-/admin/actions/runners` (or equivalent URL for your environment), and copy token from "Create new Runner". After that, provide the token to:
+Once Gitea is installed, if we want to run its included CI/CD, we can deploy gitea runners outside of LXC, on a host running docker (the script will install it via snap if not present). Modify the script and the service template if you need to and run on a server to set up gitea act runner:
 
 ```
-ansible-playbook -i inventory enable_runner.yaml
+./install-gitea-runner.sh
 ```
+
+There are several gitea runner demos in the demos/ directory.
+
+We can proceed with configuring matrix server, running conduwuit server. If you want to, edit the `conduwuit.toml` template and run the following:
+
+
+```
+ansible-playbook -i inventory config_matrix.yaml
+```
+
+To create an admin user, connect via a matrix client such as element to the server and port hosting it - if unmodified, this will be `http://localhost:8008/` - and create the first user. If you didn't modify the configuration template, registration token will be `demo`.
 
 TBC...
