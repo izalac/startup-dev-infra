@@ -1,7 +1,6 @@
-# Under construction
+# Startup Dev Infra-as-Code
 
-Once completed this project will provide IaC and instructions to setup
-minimal onprem software for a dev company.
+This project provides IaC and instructions to setup minimal onprem software for a dev company. It runs on a laptop, with the addition of a mobile router, it can also be used as mobile infrastructure, and can be scaled up using microcloud or similar solutions.
 
 ## Basic host setup - assuming Ubuntu 24.04:
 
@@ -80,4 +79,4 @@ ansible-playbook -i inventory config_matrix.yaml
 
 To create an admin user, connect via a matrix client such as element to the server and port hosting it - if unmodified, this will be `http://localhost:8008/` - and create the first user. If you didn't modify the configuration template, registration token will be `demo`.
 
-TBC...
+To create and manage other ssh users, you can modify and use the `manage_jumphost_users.yaml` playbook in a similar fashion.
