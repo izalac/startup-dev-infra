@@ -1,0 +1,62 @@
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download go
+        run: wget https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
+      - name: Extract go
+        run: tar xvzf go1.24.1.linux-amd64.tar.gz
+      - name: Go build
+        run: go/bin/go build
+      - name: Check if app is here
+        run: ls testapp
+      - name: Set up SSH config
+        run: |
+          mkdir -p ~/.ssh
+          echo "
+          Host jumphost
+              HostName ${{ secrets.JUMP_HOST }}
+              User ${{ secrets.SSH_USER }}
+              Port ${{ secrets.JUMP_PORT }}
+              StrictHostKeyChecking no
+
+          Host target
+              HostName ${{ secrets.SSH_HOST }}
+              User ${{ secrets.SSH_USER }}
+              ProxyJump jumphost
+              StrictHostKeyChecking no
+          " >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Create remote directory
+        run: ssh target "mkdir -p ~/app/green"
+      - name: Stop service if it's running
+        run: |
+          ssh target << 'EOF'
+            if systemctl list-units --type=service --all | grep -q "^green.service"; then
+              sudo systemctl stop green.service
+            fi
+          EOF
+      - name: Folder cleanup
+        run: ssh target "sudo rm -rf ~/app/green/*"
+      - name: Copy app via jumphost to appsrv
+        run: scp -r ./testapp target:~/app/green/
+      - name: Copy service file via jumphost to appsrv
+        run: scp -r ./green.service target:~/app/green/
+
+      - name: Install and start green service
+        run: |
+          ssh target << 'EOF'
+            sudo mv ~/app/green/green.service /etc/systemd/system/green.service
+            sudo systemctl daemon-reexec
+            sudo systemctl daemon-reload
+            sudo systemctl enable green.service
+            sudo systemctl restart green.service
+          EOF

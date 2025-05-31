@@ -1,0 +1,14 @@
+[Unit]
+Description=TestApp Green Service
+After=network.target
+
+[Service]
+ExecStart=/home/ansible/app/green/testapp --port=8002
+WorkingDirectory=/home/ansible/app/green
+Restart=always
+RestartSec=5
+User=ansible
+Environment=PATH=/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

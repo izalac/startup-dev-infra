@@ -1,0 +1,14 @@
+[Unit]
+Description=TestApp Blue Service
+After=network.target
+
+[Service]
+ExecStart=/home/ansible/app/blue/testapp --port=8001
+WorkingDirectory=/home/ansible/app/blue
+Restart=always
+RestartSec=5
+User=ansible
+Environment=PATH=/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target
