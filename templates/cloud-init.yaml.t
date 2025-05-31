@@ -6,7 +6,6 @@ packages:
   - ssh
   - ca-certificates
   - curl
-  - auditd
 users:
   - name: ansible
     sudo: ALL=(ALL) NOPASSWD:ALL
