@@ -1,21 +1,20 @@
 [Unit]
-Description=conduwuit Matrix homeserver
+Description=Conduit Matrix Server
 Wants=network-online.target
 After=network-online.target
-Alias=matrix-conduwuit.service
-Documentation=https://conduwuit.puppyirl.gay/
+Alias=matrix-conduit.service
 
 [Service]
 DynamicUser=yes
-User=conduwuit
-Group=conduwuit
+User=conduit
+Group=conduit
 Type=notify
 
-Environment="CONDUWUIT_CONFIG=/etc/conduwuit/conduwuit.toml"
+Environment="CONDUIT_CONFIG=/etc/conduit/conduit.toml"
 
-ExecStart=/usr/sbin/conduwuit
+ExecStart=/usr/sbin/conduit
 
-ReadWritePaths=/var/lib/conduwuit /etc/conduwuit
+ReadWritePaths=/var/lib/conduit /etc/conduit
 
 AmbientCapabilities=
 CapabilityBoundingSet=
@@ -48,9 +47,9 @@ SystemCallArchitectures=native
 SystemCallFilter=@system-service @resources
 SystemCallFilter=~@clock @debug @module @mount @reboot @swap @cpu-emulation @obsolete @timer @chown @setuid @privileged @keyring @ipc
 SystemCallErrorNumber=EPERM
-#StateDirectory=conduwuit
+#StateDirectory=conduit
 
-RuntimeDirectory=conduwuit
+RuntimeDirectory=conduit
 RuntimeDirectoryMode=0750
 
 Restart=on-failure

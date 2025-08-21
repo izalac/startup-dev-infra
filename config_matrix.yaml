@@ -7,14 +7,14 @@
   tasks:
     - name: Copy config file
       ansible.builtin.copy:
-        src: ./templates/conduwuit.toml
-        dest: /etc/conduwuit/conduwuit.toml
+        src: ./templates/conduit.toml
+        dest: /etc/conduit/conduit.toml
         mode: '0644'
 
     - name: Copy service file
       ansible.builtin.copy:
-        src: ./templates/conduwuit.service
-        dest: /etc/systemd/system/conduwuit.service
+        src: ./templates/conduit.service
+        dest: /etc/systemd/system/conduit.service
         mode: '0644'
 
     - name: Reloads systemd daemon configuration
@@ -22,7 +22,7 @@
 
     - name: Stopping service
       ansible.builtin.systemd:
-        name: conduwuit
+        name: conduit
         enabled: yes
         state: stopped
 
@@ -32,6 +32,6 @@
 
     - name: Starting service
       ansible.builtin.systemd:
-        name: conduwuit
+        name: conduit
         enabled: yes
         state: started

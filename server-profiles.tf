@@ -22,7 +22,7 @@ resource "lxd_profile" "syslogsrv" {
   }
 }
 
-# Matrix installs a fixed version of conduwuit server - might require updating
+# Matrix installs a current stable version of conduit server
 resource "lxd_profile" "matrix" {
   name        = "profile-matrix"
   description = "Matrix server configuration profile"
@@ -30,11 +30,11 @@ resource "lxd_profile" "matrix" {
     "cloud-init.user-data" : <<EOT
     #cloud-config
     runcmd:
-      - wget https://github.com/girlbossceo/conduwuit/releases/download/v0.4.6/static-x86_64-unknown-linux-musl -O /usr/sbin/conduwuit
-      - chmod +x /usr/sbin/conduwuit
-      - mkdir /var/lib/conduwuit
-      - chmod 777 /var/lib/conduwuit
-      - mkdir /etc/conduwuit
+      - wget https://gitlab.com/api/v4/projects/famedly%2Fconduit/jobs/artifacts/master/raw/x86_64-unknown-linux-musl?job=artifacts -O /usr/sbin/conduit
+      - chmod +x /usr/sbin/conduit
+      - mkdir /var/lib/conduit
+      - chmod 777 /var/lib/conduit
+      - mkdir /etc/conduit
     EOT
   }
 }

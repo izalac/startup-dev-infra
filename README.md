@@ -70,7 +70,7 @@ Once Gitea is installed, if we want to run its included CI/CD, we can deploy git
 
 There are several gitea runner demos in the demos/ directory.
 
-We can proceed with configuring matrix server, running conduwuit server. If you want to, edit the `conduwuit.toml` template and run the following:
+We can proceed with configuring matrix server, running conduit server. If you want to, edit the `conduit.toml` template and run the following:
 
 
 ```
